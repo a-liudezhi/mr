@@ -30,7 +30,7 @@ class GroupsController < ApplicationController
 
  def update
    if @group.update(group_params)
-   redirect_to groups_path, notice: "Update Success"
+   redirect_to groups_path, notice: "更新成功!"
  else
    render :edit
    end
@@ -38,7 +38,7 @@ class GroupsController < ApplicationController
 
  def destroy
    @group.destroy
-   redirect_to groups_path, alert: "Group deleted"
+   redirect_to groups_path, alert: "电影已删除!"
  end
 
    def join
@@ -46,9 +46,9 @@ class GroupsController < ApplicationController
 
     if !current_user.is_member_of?(@group)
       current_user.join!(@group)
-      flash[:notice] = "加入本讨论版成功！"
+      flash[:notice] = "收藏本电影成功！"
     else
-      flash[:warning] = "你已经是本讨论版成员了！"
+      flash[:warning] = "你已经收藏过本电影了！"
     end
 
     redirect_to group_path(@group)
@@ -59,9 +59,9 @@ class GroupsController < ApplicationController
 
     if current_user.is_member_of?(@group)
       current_user.quit!(@group)
-      flash[:alert] = "已退出本讨论版！"
+      flash[:alert] = "已取消收藏！"
     else
-      flash[:warning] = "你不是本讨论版成员，怎么退出 XD"
+      flash[:warning] = "你还没收藏，怎么取消"
     end
 
     redirect_to group_path(@group)
@@ -72,7 +72,7 @@ private
   def find_group_and_check_permission
     @group = Group.find(params[:id])
     if current_user != @group.user
-      redirect_to root_path, alert: "You have no permission"
+      redirect_to root_path, alert: "你没有许可，请先登陆!"
     end
   end
 
